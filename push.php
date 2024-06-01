@@ -21,7 +21,7 @@ final class Repositiry {
 
         } catch (PDOException $e) {
 
-            file_put_contents('./mysql.log', $e->getMessage(), FILE_APPEND);
+            file_put_contents('./mysql.log', $e->getMessage() . "\n", FILE_APPEND);
 
         }
     }
@@ -46,4 +46,69 @@ final class Repositiry {
 
         return static::$repo;
     }
+
+    public function set(string $data)
+    {
+
+        $validated = htmlspecialchars($data);
+
+        $query = <<<SQL
+            INSERT INTO table (data) VALUE (:data);
+        SQL;
+
+        $statment = $this->pdo->prepare($query);
+        
+        $statment->bindParam(':data', $validated);
+
+        $statment->execute();
+
+    }
+
+    public function update(int $id, string $data)
+    {
+
+        $validated = htmlspecialchars($data);
+
+        $query = <<<SQL
+            UPDATE table SET data = :data WHERE id = :id
+        SQL;
+
+        $statment = $this->pdo->prepare($query);
+
+
+        $statment->bindParam(':id', $id);
+        $statment->bindParam(':data', $validated);
+
+        $statment->execute();
+    }
+
+    public function delete()
+    {
+        $query = <<<SQL
+            DELETE FROM table WHERE id = :id
+        SQL;
+
+        $statment = $this->pdo->prepare($query);
+
+        $statment->bindParam(':id', $id);
+
+        $statment->execute();
+    }
+
+    public function getAll(string $table): array
+    {
+        $query = <<<SQL
+            SELECT * FROM $table;
+        SQL;
+
+        $statment = $this->pdo->prepare($query);
+
+        $statment->execute();
+
+        $result = $statment->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+
 }

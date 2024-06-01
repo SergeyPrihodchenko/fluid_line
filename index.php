@@ -31,15 +31,23 @@ if (php_sapi_name() === 'cli') {
     }
 } else {
 
-if($_FILES['file']['error'] == UPLOAD_ERR_OK) {
+try {
+
+    $repo = Repositiry::getRepository('test', 'test', 'test', 'test');
+
+} catch (\Exception $e) {
+
+    echo $e->getMessage();
+
+}
+
+if(!empty($_FILES['file'])) {
 
     $file = $_FILES['file'];
 
     $uploader = new FileUploader($file);
 
     $fileName = $uploader->upload();
-
-    echo $fileName;
 
     if (isset($fileName)) {
         $fConverter = new FileConverter($fileName);
@@ -51,6 +59,8 @@ if($_FILES['file']['error'] == UPLOAD_ERR_OK) {
         $sworder->swordsSort();
 
         $sworder->counterLittres();
+
+        return $fileName;
     }
 }
 
