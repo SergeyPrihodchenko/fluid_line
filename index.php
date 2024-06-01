@@ -1,5 +1,8 @@
 <?php
 
+// ini_set('post_max_size', '64M');
+// ini_set('upload_max_filesize', '64M');
+
 require_once(__DIR__.'/vendor/autoload.php');
 require_once(__DIR__.'/push.php');
 
