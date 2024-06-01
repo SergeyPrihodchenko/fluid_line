@@ -4,6 +4,7 @@ require_once(__DIR__.'/vendor/autoload.php');
 require_once(__DIR__.'/push.php');
 
 use Fluid\Line\FileConverter;
+use Fluid\Line\FileUploader;
 use Fluid\Line\SwordSorting;
 
 if (php_sapi_name() === 'cli') {
@@ -12,9 +13,9 @@ if (php_sapi_name() === 'cli') {
 
     if (isset($options['f'])) {
 
-        $filePath = $options['f'];
+        $fileName = $options['f'];
 
-        $fConverter = new FileConverter($filePath);
+        $fConverter = new FileConverter($fileName);
 
         $file = $fConverter->converter();
 
@@ -25,14 +26,32 @@ if (php_sapi_name() === 'cli') {
         $sworder->counterLittres();
 
     } else {
-        echo "Использование: php index.php -f file_path \n";
+        echo "Использование: php index.php -f file_name \n";
         exit();
     }
 } else {
 
 if($_FILES['file']['error'] == UPLOAD_ERR_OK) {
 
+    $file = $_FILES['file'];
 
+    $uploader = new FileUploader($file);
+
+    $fileName = $uploader->upload();
+
+    echo $fileName;
+
+    if (isset($fileName)) {
+        $fConverter = new FileConverter($fileName);
+
+        $file = $fConverter->converter();
+
+        $sworder = new SwordSorting($file);
+
+        $sworder->swordsSort();
+
+        $sworder->counterLittres();
+    }
 }
 
 ?>

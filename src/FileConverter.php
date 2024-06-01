@@ -39,7 +39,6 @@ class FileConverter {
         if(!file_exists($this->filePath)) {
 
             return false;
-
         }
 
         $data = file_get_contents($this->filePath);
