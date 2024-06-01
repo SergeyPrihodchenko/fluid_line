@@ -4,7 +4,7 @@ namespace Fluid\Line;
 
 class FileUploader {
 
-    private const uploadDir = __DIR__. '/..//';
+    private const UPLOAD_DIR = __DIR__. '/..//';
 
     public function __construct(
         private $file
@@ -15,7 +15,7 @@ class FileUploader {
 
     public function upload()
     {
-        $uploadFile = self::uploadDir . basename($this->file['name']);
+        $uploadFile = self::UPLOAD_DIR . basename($this->file['name']);
 
         if (move_uploaded_file($this->file['tmp_name'], $uploadFile)) {
 

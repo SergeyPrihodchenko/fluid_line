@@ -35,6 +35,12 @@ try {
 
     $repo = Repositiry::getRepository('test', 'test', 'test', 'test');
 
+    if($repo) {
+
+        throw new Exception('Нет подключения к базеданных');
+
+    }
+
 } catch (\Exception $e) {
 
     echo $e->getMessage();

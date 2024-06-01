@@ -4,7 +4,7 @@ namespace Fluid\Line;
 
 class FileConverter {
 
-    public const encodings = ['ASCII', 'Windows-1251', 'KOI8-R', 'ISO-8859-5', 'ISO-8859-7', 'ISO-8859-6', 'EUC-JP', 'Shift_JIS', 'GB2312', 'Big5'];
+    public const ENCODINGS = ['ASCII', 'Windows-1251', 'KOI8-R', 'ISO-8859-5', 'ISO-8859-7', 'ISO-8859-6', 'EUC-JP', 'Shift_JIS', 'GB2312', 'Big5'];
 
     protected const utf8 = 'UTF-8';
 
@@ -17,7 +17,7 @@ class FileConverter {
 
     protected function fromEncodings(string $typeEncoding): bool 
     {
-        $result = array_search($typeEncoding, FileConverter::encodings);
+        $result = array_search($typeEncoding, FileConverter::ENCODINGS);
 
         if($result === false) {
             return false;
@@ -28,7 +28,7 @@ class FileConverter {
 
     protected function checkEncoding(string $data): string
     {
-        $typeEncoding = mb_detect_encoding($data, FileConverter::encodings, true);
+        $typeEncoding = mb_detect_encoding($data, FileConverter::ENCODINGS, true);
 
         return $typeEncoding;
     }

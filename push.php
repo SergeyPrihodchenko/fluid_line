@@ -82,7 +82,7 @@ final class Repositiry {
         $statment->execute();
     }
 
-    public function delete()
+    public function delete(int $id)
     {
         $query = <<<SQL
             DELETE FROM table WHERE id = :id
