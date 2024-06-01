@@ -17,6 +17,10 @@ class SwordSorting {
 
     public function swordsSort(): void
     {
+        if(!is_dir(SwordSorting::LIBRARY_PATH)) {
+            mkdir(SwordSorting::LIBRARY_PATH);
+        }
+
         if(file_exists($this->filePath)) {
 
             $stream = fopen($this->filePath, 'r');
