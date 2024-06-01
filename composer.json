@@ -1,0 +1,15 @@
+{
+    "name": "fluid/line",
+    "autoload": {
+        "psr-4": {
+            "Fluid\\Line\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sergey",
+            "email": "s.prihodchenko@yandex.ru"
+        }
+    ],
+    "require": {}
+}
