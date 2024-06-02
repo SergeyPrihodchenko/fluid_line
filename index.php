@@ -9,6 +9,7 @@ require_once(__DIR__.'/push.php');
 use Fluid\Line\FileConverter;
 use Fluid\Line\FileUploader;
 use Fluid\Line\SwordSorting;
+use Fluid\Line\ConunterLetters;
 
 if (php_sapi_name() === 'cli') {
     // Обработка аргументов, переданных через CLI
@@ -26,7 +27,9 @@ if (php_sapi_name() === 'cli') {
 
         $sworder->swordsSort();
 
-        $sworder->counterLittres();
+        $counter = new ConunterLetters();
+
+        $counter->counterLettres();
 
     } else {
         echo "Использование: php index.php -f file_name \n";
@@ -67,7 +70,9 @@ if(!empty($_FILES['file'])) {
 
         $sworder->swordsSort();
 
-        $sworder->counterLittres();
+        $counter = new ConunterLetters();
+
+        $counter->counterLettres();
 
         echo "Файл $fileName загружен и обработан!";
     }
