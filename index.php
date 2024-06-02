@@ -46,7 +46,7 @@ try {
 
 } catch (\Exception $e) {
 
-    echo $e->getMessage();
+    echo $e->getMessage() . '</br>';
 
 }
 
@@ -69,7 +69,7 @@ if(!empty($_FILES['file'])) {
 
         $sworder->counterLittres();
 
-        return $fileName;
+        echo "Файл $fileName загружен и обработан!";
     }
 }
 
