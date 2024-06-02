@@ -47,68 +47,77 @@ final class Repositiry {
         return static::$repo;
     }
 
-    public function set(string $data)
-    {
+    private function query($query, $params = []) {
 
-        $validated = htmlspecialchars($data);
+        $stmt = $this->pdo->prepare($query);
 
-        $query = <<<SQL
-            INSERT INTO table (data) VALUE (:data);
-        SQL;
+        foreach ($params as $key => $value) {
 
-        $statment = $this->pdo->prepare($query);
-        
-        $statment->bindParam(':data', $validated);
+            $data[$key] = htmlspecialchars($value);
 
-        $statment->execute();
+        }
+
+        $stmt->execute($params);
+
+        return $stmt;
+    }
+
+    public function fetchAll($query, $params = []) {
+
+        $stmt = $this->query($query, $params);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     }
 
-    public function update(int $id, string $data)
-    {
+    public function fetch($query, $params = []) {
 
-        $validated = htmlspecialchars($data);
+        $stmt = $this->query($query, $params);
 
-        $query = <<<SQL
-            UPDATE table SET data = :data WHERE id = :id
-        SQL;
+        return $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $statment = $this->pdo->prepare($query);
-
-
-        $statment->bindParam(':id', $id);
-        $statment->bindParam(':data', $validated);
-
-        $statment->execute();
     }
 
-    public function delete(int $id)
-    {
-        $query = <<<SQL
-            DELETE FROM table WHERE id = :id
-        SQL;
+    public function insert($table, $data) {
 
-        $statment = $this->pdo->prepare($query);
+        $columns = implode(", ", array_keys($data));
 
-        $statment->bindParam(':id', $id);
+        $values = ":" . implode(", :", array_keys($data));
 
-        $statment->execute();
+        $query = "INSERT INTO $table ($columns) VALUES ($values)";
+
+        $this->query($query, $data);
+
     }
 
-    public function getAll(string $table): array
-    {
-        $query = <<<SQL
-            SELECT * FROM $table;
-        SQL;
+    public function update($table, $data, $where) {
 
-        $statment = $this->pdo->prepare($query);
+        $set = "";
 
-        $statment->execute();
+        $params = [];
 
-        $result = $statment->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($data as $key => $value) {
 
-        return $result;
+            $set .= "$key = :$key, ";
+
+            $params[":$key"] = $value;
+
+        }
+
+        $set = rtrim($set, ", ");
+
+        $query = "UPDATE $table SET $set WHERE $where";
+
+        $this->query($query, $params);
+
     }
 
+    public function delete($table, $where) {
+
+        $query = "DELETE FROM $table WHERE $where";
+
+        $this->query($query);
+
+    }
 
 }
